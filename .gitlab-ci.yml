@@ -1,0 +1,28 @@
+image: openjdk:latest
+before_script:
+  - cd A1
+  - chmod +x gradlew
+
+stages:
+    - build
+    - test
+
+build:
+  stage: build
+  script:
+    - ./gradlew build
+  tags:
+     - dalfcs_gitlab_docker_ci
+
+test:
+  stage: test
+  script:
+    - ./gradlew test
+  artifacts:
+    when: always
+    paths:
+      - A1/build/test-results/test/*.xml
+    reports:
+      junit: A1/build/test-results/test/*.xml
+  tags:
+     - dalfcs_gitlab_docker_ci
